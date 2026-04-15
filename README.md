@@ -1,5 +1,7 @@
 A script for Tampermonkey google chrome extensions that automatically adds dynamic filters to the Data Mapping screens in Data Cloud
 
+[demo](./demo_with_filters.gif)
+
 ## Installation
 
 todo...
