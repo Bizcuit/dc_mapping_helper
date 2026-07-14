@@ -200,9 +200,21 @@ var DataCloudMappingHelper = {
         });
     },
 
-    restore: function(){
+    getFilterElements : function(){
         const sourceFilterElement = this.querySelectorAllDeep(this.paths.sourceFilter)?.[0]?.parentElement?.querySelector('select');
         const destinationFilterElement = this.querySelectorAllDeep(this.paths.destinationFilter)?.[0]?.parentElement?.querySelector('select');
+        
+        return { sourceFilterElement, destinationFilterElement };
+    },
+
+    isInitialized: function(){
+        const { sourceFilterElement, destinationFilterElement } = this.getFilterElements();
+
+        return sourceFilterElement || destinationFilterElement;
+    },
+
+    restore: function(){
+        const { sourceFilterElement, destinationFilterElement } = this.getFilterElements();
 
         if(sourceFilterElement){
             sourceFilterElement.remove();
@@ -230,6 +242,7 @@ var DataCloudMappingHelper = {
 
     init: function(){
         this.restore();
+
         this.loadSourcesDestinationsAndLines();
         this.appendFilters();
         this.updateConnectionLines();
@@ -249,15 +262,15 @@ var DataCloudMappingHelper = {
 }
 
 let checkInterval = setInterval(() => {
-    console.log("waiting for mapping elements to appear on the page");
-    if(DataCloudMappingHelper.querySelectorAllDeep(DataCloudMappingHelper.paths.sources)?.length > 1){
+    // console.log("waiting for mapping elements to appear on the page");
+    if(DataCloudMappingHelper.querySelectorAllDeep(DataCloudMappingHelper.paths.sources)?.length > 1 && !DataCloudMappingHelper.isInitialized()){
         console.log("found mapping elements to appear on the page");
-        clearInterval(checkInterval);
+        //clearInterval(checkInterval);
         setTimeout(() => {
             DataCloudMappingHelper.init();
-        }, 5000);
+        }, 500);
     }
-}, 500);
+}, 3000);
 
 
 })();
